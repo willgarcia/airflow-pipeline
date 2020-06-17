@@ -1,90 +1,79 @@
-CREATE TABLE public.artists (
-	artistid varchar(256) NOT NULL,
-	name varchar(256),
-	location varchar(256),
-	lattitude numeric(18,0),
-	longitude numeric(18,0)
+CREATE TABLE staging_events (
+    artist VARCHAR(255),
+    auth VARCHAR(40),
+    firstName VARCHAR(255),
+    gender VARCHAR(1),
+    itemInSession SMALLINT, 
+    lastName VARCHAR(255),
+    length  DECIMAL(10, 5),
+    level VARCHAR(40),
+    location VARCHAR(255),
+    method VARCHAR(20),
+    page VARCHAR(40),
+    registration VARCHAR(40),
+    sessionId INT,
+    song VARCHAR(255),
+    status SMALLINT,
+    ts BIGINT,
+    user_agent  VARCHAR(255),
+    userId INTEGER 
 );
 
-CREATE TABLE public.songplays (
-	playid varchar(32) NOT NULL,
-	start_time timestamp NOT NULL,
-	userid int4 NOT NULL,
-	"level" varchar(256),
-	songid varchar(256),
-	artistid varchar(256),
-	sessionid int4,
-	location varchar(256),
-	user_agent varchar(256),
-	CONSTRAINT songplays_pkey PRIMARY KEY (playid)
+CREATE TABLE staging_songs (
+    artist_id VARCHAR(100),
+    artist_latitude DECIMAL(9,6),
+    artist_longitude DECIMAL(9,6),
+    artist_location VARCHAR(255),
+    artist_name VARCHAR(255),
+    duration DOUBLE PRECISION,
+    num_songs SMALLINT,
+    song_id VARCHAR(255),
+    title  VARCHAR(255),
+    year SMALLINT 
+)
+
+CREATE TABLE factsongplay (
+    songplay_id INT IDENTITY(0,1),
+    start_time TIMESTAMP NOT NULL,
+    user_id VARCHAR(100) NOT NULL,
+    level VARCHAR(10),
+    song_id VARCHAR(100) NOT NULL,
+    artist_id VARCHAR(100) NOT NULL,
+    session_id VARCHAR(100) NOT NULL,
+    location VARCHAR(200),
+    user_agent  VARCHAR(200)
 );
 
-CREATE TABLE public.songs (
-	songid varchar(256) NOT NULL,
-	title varchar(256),
-	artistid varchar(256),
-	"year" int4,
-	duration numeric(18,0),
-	CONSTRAINT songs_pkey PRIMARY KEY (songid)
+CREATE TABLE dimsong (
+    song_id VARCHAR(100) PRIMARY KEY,
+    title  VARCHAR(255),
+    artist_id VARCHAR(100) NOT NULL,
+    year SMALLINT,
+    duration SMALLINT 
 );
 
-CREATE TABLE public.staging_events (
-	artist varchar(256),
-	auth varchar(256),
-	firstname varchar(256),
-	gender varchar(256),
-	iteminsession int4,
-	lastname varchar(256),
-	length numeric(18,0),
-	"level" varchar(256),
-	location varchar(256),
-	"method" varchar(256),
-	page varchar(256),
-	registration numeric(18,0),
-	sessionid int4,
-	song varchar(256),
-	status int4,
-	ts int8,
-	useragent varchar(256),
-	userid int4
+CREATE TABLE dimuser (
+    user_id VARCHAR(100) PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    gender VARCHAR(1),
+    level VARCHAR(10) 
 );
 
-CREATE TABLE public.staging_songs (
-	num_songs int4,
-	artist_id varchar(256),
-	artist_name varchar(256),
-	artist_latitude numeric(18,0),
-	artist_longitude numeric(18,0),
-	artist_location varchar(256),
-	song_id varchar(256),
-	title varchar(256),
-	duration numeric(18,0),
-	"year" int4
+CREATE TABLE dimartist (
+    artist_id VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100),
+    location VARCHAR(200),
+    latitude DECIMAL(9,6),
+    longitude DECIMAL(9,6) 
 );
 
-CREATE TABLE public.staging_songs (
-	num_songs int4,
-	artist_id varchar(256),
-	artist_name varchar(256),
-	artist_latitude numeric(18,0),
-	artist_longitude numeric(18,0),
-	artist_location varchar(256),
-	song_id varchar(256),
-	title varchar(256),
-	duration numeric(18,0),
-	"year" int4
+CREATE TABLE dimtime (
+    start_time TIMESTAMP PRIMARY KEY,
+    hour SMALLINT,
+    day SMALLINT,
+    week SMALLINT,
+    month SMALLINT,
+    year SMALLINT,
+    weekday SMALLINT 
 );
-
-CREATE TABLE public.users (
-	userid int4 NOT NULL,
-	first_name varchar(256),
-	last_name varchar(256),
-	gender varchar(256),
-	"level" varchar(256),
-	CONSTRAINT users_pkey PRIMARY KEY (userid)
-);
-
-
-
-
-
